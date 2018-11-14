@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EcoCoin</title>
+<style>
+.rTable {
+	display: table;
+	/*height:30px;*/
+}
+
+h2 svg {
+   padding: 8
+   }
+
+svg {
+   width: 800; 
+   height:800;
+}
+
+.rTableRow {
+	display: table-row;
+	/*height: 100px;*/
+}
+
+div {
+  margin: 0px;   
+}
+
+.window {
+   overflow:scroll 
+   }
+
+.line {
+   outline: 2px solid lavenderblush;
+   padding-top: 4px;
+   padding-bottom: 10px;
+   margin-top: 4px;
+   margin-bottom: 10px;
+   background: whitesmoke;
+   display: inline-block;
+   /*background-attachment: fixed
+   overflow:scroll */
+   }
+
+.rTableHeading {
+	display: table-header-group;
+	background-color: #ddd;
+	/*height: 30px;*/
+}
+
+.rTableBody {
+	display: table-row-group;
+	height:0
+}
+
+.rTableFoot {
+	display: table-footer-group;
+	height:0
+}
+
+.rTableCell, .rTableHead {
+	display: table-cell;
+	padding: 3px 10px;
+	border: 1px solid #999999;
+}
+
+td {
+	padding: 3px 10px;
+	border: 1px solid #999999;
+   }
+
+.a {
+   fill:blue;
+}
+</style>
+<script>
+function getStyle(id, prop){
+    var elem = document.getElementById(id);
+    cssObj = window.getComputedStyle(elem, null);
+    return cssObj.getPropertyValue(prop);
+}
+function getBBox(id){
+    var elm = document.getElementById(id);
+    var rect = elm.getBBox()
+    var box = JSON.stringify({x:rect.x, y:rect.y, width:rect.width, height:rect.height});
+    return box;
+}
+
+function getBoundingClientRect(id){
+    var elm = document.getElementById(id);
+    box = JSON.stringify(elm.getBoundingClientRect());
+    return box;
+}
+</script>
+</head>
+<body id="root" contenteditable="true">
+<!-- <h2> Bert</h2> -->
+<!-- <svg id="svg" width="200px" height="200px" > -->
+<!-- <circle id="c" r="50" cx = "50px" cy = "50px" fill="yellow" stroke="green" stroke-width="0px"/> -->
+<!-- </svg> -->
+<!-- <script> -->
+<!-- // alert(getBBox("c")); -->
+<!-- </script> -->
+<!-- math xmlns="http://www.w3.org/1998/Math/MathML"--> 
+<h1>Hello</h1>
+<div>
+ <math>
+ <mstyle displaystyle="true" mathcolor="teal">
+ <mrow>
+  <mi>x</mi>
+  <mo>=</mo>
+  <mstyle displaystyle="true">
+  <mfrac>
+    <mrow>
+      <mrow>
+        <mo>-</mo>
+        <mi>b</mi>
+      </mrow>
+      <mo>&#xB1;<!--PLUS-MINUS SIGN--></mo>
+      <msqrt>
+        <mrow>
+          <msup>
+            <mi>b</mi>
+            <mn>2</mn>
+          </msup>
+          <mo>-</mo>
+          <mrow>
+            <mn>4</mn>
+            <mo>&#x2062;<!--INVISIBLE TIMES--></mo>
+            <mi>a</mi>
+            <mo>&#x2062;<!--INVISIBLE TIMES--></mo>
+            <mi>c</mi>
+          </mrow>
+        </mrow>
+      </msqrt>
+    </mrow>
+    <mrow>
+      <mn>2</mn>
+      <mo>&#x2062;<!--INVISIBLE TIMES--></mo>
+      <mi>a</mi>
+    </mrow>
+  </mfrac>
+  </mstyle>
+</mrow>
+</mstyle>
+</math>
+</div>
+</body>
+</html>
