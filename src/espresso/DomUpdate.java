@@ -312,5 +312,15 @@ class DomUpdate {
         we.executeScript(result);
         return id;
     }
+    
+    static public String addStylesheet(WebEngine we, String id, String content) {
+        final String result = "var sheet = document.createElement(\'style\');\n"
+                               + "sheet.id=\"" + id+"\";\n"
+                               + "sheet.innerHTML=\""+content+"\";\n"
+                               + "document.body.appendChild(sheet);"
+                            ;
+        we.executeScript(result);
+        return id;
+    }
     }
 
