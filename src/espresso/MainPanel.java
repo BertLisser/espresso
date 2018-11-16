@@ -153,6 +153,19 @@ public class MainPanel extends Application {
 								}
 								break;
 							}
+							case "attributeChild": {
+								// eMsg(""+input.length);
+								if (input.length == 5) {
+									root.select(input[1]).attributeChild(input[2], input[3], input[4]);
+									out.println("ok");
+								} else if (input.length == 4) {
+									eMsg("" + input.length);
+									String s = root.select(input[1]).attributeChild(input[2], input[3]);
+									eMsg(s);
+									out.println(s);
+								}
+								break;
+							}
 							case "property": {
 								// eMsg(""+input.length);
 								if (input.length == 4) {

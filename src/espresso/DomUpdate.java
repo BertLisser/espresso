@@ -229,6 +229,24 @@ class DomUpdate {
         return val;
     }
     
+    public void attributeChild(String attr, String val, String indx) {
+        final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
+        		              +"var indx = parseInt(indx);\n"
+        		              +"var c = found.children["+indx+"];\n"
+                              +"c.setAttribute(\""+ attr + "\",\"" + val + "\");\n";
+        webEngine.executeScript(result);
+    }
+    
+    public String attributeChild(String attr, String indx) {
+        final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
+        		              +"var indx = parseInt(indx);\n"
+        		              +"var c = found.children["+indx+"];"
+                            +  ("var result = c.getAttribute(\""+ attr + "\");\n")
+                            + "result";
+        String val = (String) webEngine.executeScript(result);
+        return val;
+    }
+    
     public String property(String attr) {
         final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
                             + "var result = found."+attr+";\n"
