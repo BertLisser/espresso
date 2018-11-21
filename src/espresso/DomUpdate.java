@@ -65,7 +65,8 @@ class DomUpdate {
         ,PATH((we, id)     -> svgEl("path", we, id))
         ,TEXT((we, id)     -> svgEl("text", we, id))
         ,DEFS((we, id)         -> svgEl("defs", we, id))
-        ,MARKER((we, id)     -> svgEl("marker", we, id))      
+        ,MARKER((we, id)     -> svgEl("marker", we, id)) 
+        ,FOREIGNOBJECT((we, id) -> svgEl("foreignObject", we, id ))
         ;   
         final private Eval val;
         Op(Eval ev) {val=ev;}
