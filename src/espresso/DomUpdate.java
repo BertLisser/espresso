@@ -22,6 +22,7 @@
  */
 package espresso;
 
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
@@ -31,10 +32,10 @@ import netscape.javascript.JSObject;
 
 //RECT (new Eval() {public String eval(WebEngine we, String id) {return rect(we, id);}})    
 
-class DomUpdate {
+public class DomUpdate {
     
     public interface Eval {
-        public String eval(WebEngine we, String id);
+        public String eval(DomUpdate we, String id);
     }
     
     enum Op {
@@ -70,12 +71,21 @@ class DomUpdate {
         ;   
         final private Eval val;
         Op(Eval ev) {val=ev;}
-        public String build(WebEngine we, String id) {return val.eval(we, id);}
+        public String build(DomUpdate we, String id) {return val.eval(we, id);}
     }
     
     final private WebEngine webEngine;
     final private String id;
     final PrintWriter out;
+    static PrintWriter os;
+    static {
+    try {
+		os = new PrintWriter("/private/tmp/script.html");
+	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+    }
     static HashMap<WebEngine, Integer> counter = new HashMap<WebEngine, Integer>();
 
     static String newId(WebEngine we) {
@@ -101,23 +111,35 @@ class DomUpdate {
         this.webEngine = webEngine;
         this.id = newId(webEngine);
         this.out = out;
+        try {
+			os = new PrintWriter("/private/tmp/script.html");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    Object executeScript(String s) {     
+           if (!s.equals("window")) os.println(s);
+           // os.flush();
+           return webEngine.executeScript(s);
     }
 
     public void addSendMessageHandler(PrintWriter out) {
         JavaApplication app = new JavaApplication(out);
-        JSObject window = (JSObject) webEngine.executeScript("window");
+        JSObject window = (JSObject) executeScript("window");
         window.setMember("app", app);
     }
 
     public void innerHTML(String input) {
         final String result =
             "document.getElementById(\"" + this.id + "\").innerHTML=\"" + input.replaceAll("\"", "\\\\\"") + "\";";
-        webEngine.executeScript(result);
+        executeScript(result);
     }
 
     public void setFocus() {
         final String result = "document.getElementById(\"" + this.id + "\").focus();";
-        webEngine.executeScript(result);
+        executeScript(result);
     }
 
     public DomUpdate select(String id) {
@@ -125,8 +147,8 @@ class DomUpdate {
         return r;
     }
     
-    public static String htmlEl(String tag, WebEngine we, String id) {
-        String newId = newId(we);
+    public static String htmlEl(String tag, DomUpdate we, String id) {
+        String newId = newId(we.webEngine);
         final String result =
         "var el=document.createElement(\""+tag+"\");\n" + "el.id =\"" + newId + "\";\n" + 
         "document.getElementById(\"" + id + "\").appendChild(el);";
@@ -134,8 +156,8 @@ class DomUpdate {
         return newId;
     }
     
-    public static String svgEl(String tag, WebEngine we, String id) {
-        String newId = newId(we);
+    public static String svgEl(String tag, DomUpdate we, String id) {
+        String newId = newId(we.webEngine);
         final String result =
             "var NS=\"http://www.w3.org/2000/svg\";\n" 
                 + "var el=document.createElementNS(NS, \""+tag+"\");\n"
@@ -145,8 +167,8 @@ class DomUpdate {
         return newId;
     }
     
-    public static String use(WebEngine we, String id, String ref) {
-        String newId = newId(we);
+    public static String use(DomUpdate we, String id, String ref) {
+        String newId = newId(we.webEngine);
         final String result =
             "var NS=\"http://www.w3.org/2000/svg\";\n" 
             +"var link=\"http://www.w3.org/1999/xlink\";\n"
@@ -158,8 +180,8 @@ class DomUpdate {
         return newId;
     }
     
-    public static String div(WebEngine we, String id) {
-        String newId = newId(we);
+    public static String div(DomUpdate we, String id) {
+        String newId = newId(we.webEngine);
         final String result =
         "var row=document.createElement(\"div\");\n" + "row.id =\"" + newId + "\";\n" + 
         "document.getElementById(\"" + id + "\").appendChild(row);";
@@ -167,7 +189,7 @@ class DomUpdate {
         return newId;
     }
     
-    public static String add(WebEngine we, String id, String appendId) {
+    public static String add(DomUpdate we, String id, String appendId) {
         final String result =
         "var row=document.getElementById(\""+appendId+"\");\n" + 
         "document.getElementById(\"" + id + "\").appendChild(row);";
@@ -175,15 +197,15 @@ class DomUpdate {
         return id;
     }
     
-    public static String div(WebEngine we) {
-        String newId = newId(we);
+    public static String div(DomUpdate we) {
+        String newId = newId(we.webEngine);
         final String result =
         "document.createElement(\"div\");\n" + "row.id =\"" + newId + "\";\n" ;
         we.executeScript(result);
         return newId;
     }
     
-    public static String removechilds(WebEngine we, String id) {
+    public static String removechilds(DomUpdate we, String id) {
         final String result = "var myNode = document.getElementById(\""+id+"\");"+
             "while (myNode.firstChild) {\n" +
                 "myNode.removeChild(myNode.firstChild);" +
@@ -192,8 +214,8 @@ class DomUpdate {
         return id;
     }
     
-    public static String svg(WebEngine we, String id) {
-        String newId = newId(we);
+    public static String svg(DomUpdate we, String id) {
+        String newId = newId(we.webEngine);
         final String result =
             "var NS=\"http://www.w3.org/2000/svg\";\n"
                 + "var svg=document.createElementNS(NS, \"svg\");\n" + "svg.id =\"" + newId + "\";\n" 
@@ -202,8 +224,8 @@ class DomUpdate {
         return newId;
     }
 
-    public static String rect(WebEngine we, String id) {
-        String newId = newId(we);
+    public static String rect(DomUpdate we, String id) {
+        String newId = newId(we.webEngine);
         final String result =
             "var NS=\"http://www.w3.org/2000/svg\";\n" 
                 + "var rect=document.createElementNS(NS, \"rect\");\n"
@@ -216,7 +238,7 @@ class DomUpdate {
     public void attribute(String attr, String val) {
         final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
                             + "found.setAttribute(\""+ attr + "\",\"" + val + "\");\n";
-        webEngine.executeScript(result);
+        executeScript(result);
     }
     
     public String attribute(String attr) {
@@ -226,7 +248,7 @@ class DomUpdate {
                             //: 
                             +  ("var result = found.getAttribute(\""+ attr + "\");\n")
                             + "result";
-        String val = (String) webEngine.executeScript(result);
+        String val = (String) executeScript(result);
         return val;
     }
     
@@ -235,7 +257,7 @@ class DomUpdate {
         		              +"var indx = parseInt(indx);\n"
         		              +"var c = found.children["+indx+"];\n"
                               +"c.setAttribute(\""+ attr + "\",\"" + val + "\");\n";
-        webEngine.executeScript(result);
+        executeScript(result);
     }
     
     public String attributeChild(String attr, String indx) {
@@ -244,7 +266,23 @@ class DomUpdate {
         		              +"var c = found.children["+indx+"];"
                             +  ("var result = c.getAttribute(\""+ attr + "\");\n")
                             + "result";
-        String val = (String) webEngine.executeScript(result);
+        String val = (String) executeScript(result);
+        return val;
+    }
+    
+    public void attributeParent(String attr, String val) {
+        final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
+        		              +"var c = found.parentNode;\n"
+                              +"c.setAttribute(\""+ attr + "\",\"" + val + "\");\n";
+        executeScript(result);
+    }
+    
+    public String attributeParent(String attr) {
+        final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
+        		              +"var c = found.parentNode;"
+                            +  ("var result = c.getAttribute(\""+ attr + "\");\n")
+                            + "result";
+        String val = (String) executeScript(result);
         return val;
     }
     
@@ -252,7 +290,7 @@ class DomUpdate {
         final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
                             + "var result = found."+attr+";\n"
                             + "\"\"+result";
-        String val = (String) webEngine.executeScript(result);
+        String val = (String) executeScript(result);
         return val;
     }
     
@@ -260,7 +298,7 @@ class DomUpdate {
         final String result = 
                             "var result = getBBox(\""+this.id+"\");\n"
                             + "\"\"+result";
-        String val = (String) webEngine.executeScript(result);
+        String val = (String) executeScript(result);
         return val;
     }
     
@@ -268,24 +306,24 @@ class DomUpdate {
         final String result = 
                             "var result = getBoundingClientRect(\""+this.id+"\");\n"
                             + "\"\"+result";
-        String val = (String) webEngine.executeScript(result);
+        String val = (String) executeScript(result);
         return val;
     }
     
     public String style(String attr) {
         final String result = "getStyle(\""+this.id+"\",\""+attr+"\")";
-        String val = (String) webEngine.executeScript(result);
+        String val = (String) executeScript(result);
         return val;
     }
     
     public void property(String attr, String val) {
         final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
                              +"found."+attr+"="+val+";\n";
-        webEngine.executeScript(result);
+        executeScript(result);
     }
 
-    static public String textarea(WebEngine we, String id) {
-        String newId = newId(we);
+    static public String textarea(DomUpdate we, String id) {
+        String newId = newId(we.webEngine);
         final String result = "var input=document.createElement(\"textarea\");\n" + "input.id =\"" + newId + "\";\n"
             + "input.rows=\"1\";\n" + "input.addEventListener(\"input\",function(){app.sendMessage(this);});\n"
             + "document.getElementById(\"" + id
@@ -294,8 +332,8 @@ class DomUpdate {
         return newId;
     }
     
-    static public String input(WebEngine we, String id) {
-        String newId = newId(we);
+    static public String input(DomUpdate we, String id) {
+        String newId = newId(we.webEngine);
         final String result = "var input=document.createElement(\"input\");\n" + "input.id =\"" + newId + "\";\n"
             + "input.addEventListener(\"change\",function(){app.sendChange(\""+newId+"\");});\n"
             + "document.getElementById(\"" + id
@@ -304,8 +342,8 @@ class DomUpdate {
         return newId;
     }
     
-    static public String button(WebEngine we, String id) {
-        String newId = newId(we);
+    static public String button(DomUpdate we, String id) {
+        String newId = newId(we.webEngine);
         final String result = "var input=document.createElement(\"button\");\n" 
             + "input.id =\"" + newId + "\";\n"
             + "input.addEventListener(\"click\",function(){app.sendClick(\""+newId+"\");});\n" 
@@ -315,24 +353,24 @@ class DomUpdate {
         return newId;
     }
     
-    static public String setInterval(WebEngine we, String id, String interval) {
+    static public String setInterval(DomUpdate we, String id, String interval) {
         return setInterval(we, id, Integer.parseInt(interval));
     }
     
-    static public String setInterval(WebEngine we, String id, int interval) {
+    static public String setInterval(DomUpdate we, String id, int interval) {
         final String result = 
           id + " = setInterval(function(){app.sendTick(\""+id+"\");},"+interval+");";
         we.executeScript(result);
         return id;
     }
     
-    static public String clearInterval(WebEngine we, String id) {
+    static public String clearInterval(DomUpdate we, String id) {
         final String result = "clearInterval("+id+");";
         we.executeScript(result);
         return id;
     }
     
-    static public String addStylesheet(WebEngine we, String id, String content) {
+    static public String addStylesheet(DomUpdate we, String id, String content) {
         final String result = "var sheet = document.createElement(\'style\');\n"
                                + "sheet.id=\"" + id+"\";\n"
                                + "sheet.innerHTML=\""+content+"\";\n"

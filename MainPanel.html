@@ -99,6 +99,15 @@ function getBoundingClientRect(id){
     box = JSON.stringify(elm.getBoundingClientRect());
     return box;
 }
+
+function addScript(filename)
+{
+ var scriptBlock=document.createElement('script')
+ scriptBlock.setAttribute("type","text/javascript")
+ scriptBlock.setAttribute("src", filename)
+ document.getElementsByTagName("head")[0].appendChild(scriptBlock)
+}
+
 </script>
 </head>
 <body id="root" contenteditable="true">
@@ -152,6 +161,9 @@ function getBoundingClientRect(id){
 </mrow>
 </mstyle>
 </math>
+</div>
+<div>
+<button onclick="addScript('/private/tmp/script.html')"> Load </button>
 </div>
 </body>
 </html>

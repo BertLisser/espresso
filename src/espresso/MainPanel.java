@@ -13,12 +13,18 @@
 package espresso;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.file.Files;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -71,9 +77,11 @@ public class MainPanel extends Application {
 		if (!initPage.isEmpty()) {
 			URL url = this.getClass().getResource("/" + initPage);
 			if (url != null) {
+				copyFile(url, "/private/tmp/log.html");
 				String urls = url.toString();
 				if (urls != null) {
 					webEngine.load(urls);
+					
 					label.setText(urls);
 				} else {
 					label.setText("wrong init file:" + initPage);
@@ -112,6 +120,7 @@ public class MainPanel extends Application {
 									out.println("");
 								if (clientSocket != null)
 									clientSocket.close();
+								if (root.os!=null) root.os.close();
 							} catch (IOException e) {
 								eMsg(e.getMessage());
 							}
@@ -131,7 +140,7 @@ public class MainPanel extends Application {
 								break;
 							}
 							case "add": {
-								String id = DomUpdate.add(webEngine, input[1], input[2]);
+								String id = DomUpdate.add(root, input[1], input[2]);
 								out.println(id);
 								break;
 							}
@@ -161,6 +170,19 @@ public class MainPanel extends Application {
 								} else if (input.length == 4) {
 									eMsg("" + input.length);
 									String s = root.select(input[1]).attributeChild(input[2], input[3]);
+									eMsg(s);
+									out.println(s);
+								}
+								break;
+							}
+							case "attributeParent": {
+								// eMsg(""+input.length);
+								if (input.length == 4) {
+									root.select(input[1]).attributeParent(input[2], input[3]);
+									out.println("ok");
+								} else if (input.length == 3) {
+									eMsg("" + input.length);
+									String s = root.select(input[1]).attributeParent(input[2]);
 									eMsg(s);
 									out.println(s);
 								}
@@ -207,25 +229,25 @@ public class MainPanel extends Application {
 								return;
 							}
 							case "use": {
-								DomUpdate.use(webEngine, input[1], input[2]);
+								DomUpdate.use(root, input[1], input[2]);
 								eMsg(input[2]);
 								out.println("ok");
 								break;
 							}
 							case "setInterval": {
-								String r = DomUpdate.setInterval(webEngine, input[1], input[2]);
+								String r = DomUpdate.setInterval(root, input[1], input[2]);
 								eMsg("setInterval:" + r);
 								out.println(r);
 								break;
 							}
 							case "clearInterval": {
 								eMsg("clearInterval:" + input[1]);
-								String r = DomUpdate.clearInterval(webEngine, input[1]);
+								String r = DomUpdate.clearInterval(root, input[1]);
 								out.println(r);
 								break;
 							}
 							case "addStylesheet": {
-								String r = DomUpdate.addStylesheet(webEngine, input[1], input[2]);
+								String r = DomUpdate.addStylesheet(root, input[1], input[2]);
 								eMsg("addStylesheet:" + r);
 								out.println(r);
 								break;
@@ -233,7 +255,7 @@ public class MainPanel extends Application {
 							default: {
 								String g = input[0].toUpperCase();
 								eMsg(input[1]);
-								String r = DomUpdate.Op.valueOf(g).build(webEngine, input[1]);
+								String r = DomUpdate.Op.valueOf(g).build(root, input[1]);
 								eMsg("done");
 								out.println(r);
 								break;
@@ -276,5 +298,26 @@ public class MainPanel extends Application {
 		System.err.println("Start:" + portNumber + " " + width + " " + height);
 		launch();
 	}
+
+private static void copyFile(URL source, String dest)  {
+    InputStream is =null;
+    OutputStream os = null;
+	try {
+		is = source.openStream();
+		os = new FileOutputStream(dest);
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = is.read(buffer)) > 0) {
+            os.write(buffer, 0, length);
+        }
+        is.close();
+        os.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
+
+
 
 }
