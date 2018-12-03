@@ -144,6 +144,11 @@ public class MainPanel extends Application {
 								out.println(id);
 								break;
 							}
+							case "adjust": {
+								String id = DomUpdate.adjust(root, input[1], input[2]);
+								out.println(id);
+								break;
+							}
 							case "innerHTML": {
 								root.select(input[1]).innerHTML(input[2]);
 								out.println("ok");
@@ -163,9 +168,10 @@ public class MainPanel extends Application {
 								break;
 							}
 							case "attributeChild": {
-								// eMsg(""+input.length);
+								eMsg(""+input[1]+" "+input[2]+" "+input[3]+" "+input[4]);
 								if (input.length == 5) {
 									root.select(input[1]).attributeChild(input[2], input[3], input[4]);
+									eMsg("ok");
 									out.println("ok");
 								} else if (input.length == 4) {
 									eMsg("" + input.length);

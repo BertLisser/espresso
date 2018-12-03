@@ -197,6 +197,30 @@ public class DomUpdate {
         return id;
     }
     
+    public static String adjust(DomUpdate we, String outer, String inner) {
+        final String result
+        ="var inner =document.getElementById(\""+inner+"\");\n"  
+        +"var outer =document.getElementById(\""+outer+"\");\n" 
+        +"var lw = parseInt(outer.getAttribute(\"stroke-width\"));\n"
+        +"var w =  parseInt(outer.getAttribute(\"width\"));\n"
+        +"var h =  parseInt(outer.getAttribute(\"height\"));\n"
+        +"var ofs = lw/2;\n"
+        +"var siz = 100-lw;\n"
+        +"outer.lastChild.setAttribute(\"x\", ofs);\n"
+        +"outer.lastChild.setAttribute(\"y\", ofs);\n"
+        +"outer.lastChild.setAttribute(\"width\", w);\n"
+        +"outer.lastChild.setAttribute(\"height\", h);\n"
+        +"var hshrink = parseInt(inner.getAttribute(\"width\"))/100;\n"
+        +"var vshrink = parseInt(inner.getAttribute(\"height\"))/100;\n"
+        +"var iw = hshrink*(100-lw);\n"
+        +"var ih = vshrink*(100-lw);\n"
+        +"inner.setAttribute(\"width\", iw);\n"
+        +"inner.setAttribute(\"height\", ih);\n"
+        ;
+        we.executeScript(result);
+        return "ok";
+    }
+    
     public static String div(DomUpdate we) {
         String newId = newId(we.webEngine);
         final String result =
@@ -255,15 +279,16 @@ public class DomUpdate {
     public void attributeChild(String attr, String val, String indx) {
         final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
         		              +"var indx = parseInt(indx);\n"
-        		              +"var c = found.children["+indx+"];\n"
-                              +"c.setAttribute(\""+ attr + "\",\"" + val + "\");\n";
+        		              +"var c = (indx>=0?found.children["+indx+"]:found.lastChild);\n"
+                              +"c.setAttribute(\""+ attr + "\",\"" + val + "\");\n"
+        		              ;
         executeScript(result);
     }
     
     public String attributeChild(String attr, String indx) {
         final String result = "var found = document.getElementById(\"" + this.id + "\");\n" 
         		              +"var indx = parseInt(indx);\n"
-        		              +"var c = found.children["+indx+"];"
+        		              +"var c = (indx>=0?found.children["+indx+"]:found.lastChild);"
                             +  ("var result = c.getAttribute(\""+ attr + "\");\n")
                             + "result";
         String val = (String) executeScript(result);
