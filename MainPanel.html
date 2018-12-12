@@ -32,7 +32,7 @@ div {
   margin: 0px;   
 }
 
-td.inner{padding:0px; border-width:0} 
+td.inner{padding:0px; border-width:0;resize:both;overflow:auto} 
 
 table.inner{border-spacing:0;padding:0px; border-width:0;background-color:none;} 
 
@@ -41,6 +41,13 @@ table.inner{border-spacing:0;padding:0px; border-width:0;background-color:none;}
    overflow:scroll 
    }
  */
+ 
+ #root {
+     width:100%;
+     height:100%;
+     resize:both;
+     overflow:hidden
+     }
 
 .line {
    outline: 2px solid lavenderblush;
@@ -78,8 +85,8 @@ table.inner{border-spacing:0;padding:0px; border-width:0;background-color:none;}
 
 .overlay{
     position: absolute;
-    width:400px;
-    height:400px;
+    width:100%;
+    height:100%;
     background-color:none;
 }
 
@@ -116,7 +123,7 @@ function addScript(filename)
 
 </script>
 </head>
-<body id="root" contenteditable="true">
+<body>
 <!-- <h2> Bert</h2> -->
 <!-- <svg id="svg" width="200px" height="200px" > -->
 <!-- <circle id="c" r="50" cx = "50px" cy = "50px" fill="yellow" stroke="green" stroke-width="0px"/> -->
@@ -170,6 +177,8 @@ function addScript(filename)
 </div>
 <div>
 <button onclick="addScript('/private/tmp/script.html')"> Load </button>
+</div>
+<div id="root">
 </div>
 </body>
 </html>

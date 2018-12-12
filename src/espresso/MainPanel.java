@@ -63,7 +63,8 @@ public class MainPanel extends Application {
 		final Scene scene = new Scene(box);
 		label.setPrefHeight(30);
 		label.setPrefWidth(width);
-		// webView.setPrefHeight(1000);
+		webView.setPrefHeight(height);
+		webView.setPrefWidth(width);
 		// label.setBorder(border);
 		box.setBorder(border);
 		VBox.setVgrow(webView, Priority.ALWAYS);
