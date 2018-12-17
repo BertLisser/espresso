@@ -155,6 +155,15 @@ public class MainPanel extends Application {
 								out.println("ok");
 								break;
 							}
+							case "text": {
+								out.println(root.select(input[1]).text("text", input[2]));
+								break;
+							}
+							case "tspan": {
+								root.select(input[1]).text("tspan", input[2]);
+								out.println("ok");
+								break;
+							}
 							case "attribute": {
 								// eMsg(""+input.length);
 								if (input.length == 4) {

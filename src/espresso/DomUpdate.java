@@ -64,7 +64,6 @@ public class DomUpdate {
         ,ELLIPSE ((we, id)   -> svgEl("ellipse", we, id))
         ,G((we, id)         -> svgEl("g", we, id))
         ,PATH((we, id)     -> svgEl("path", we, id))
-        ,TEXT((we, id)     -> svgEl("text", we, id))
         ,DEFS((we, id)         -> svgEl("defs", we, id))
         ,MARKER((we, id)     -> svgEl("marker", we, id)) 
         ,FOREIGNOBJECT((we, id) -> svgEl("foreignObject", we, id ))
@@ -136,6 +135,21 @@ public class DomUpdate {
             "document.getElementById(\"" + this.id + "\").innerHTML=\"" + input.replaceAll("\"", "\\\\\"") + "\";";
         executeScript(result);
     }
+    
+    public String text(String tag, String input) {
+    	String newId = newId(webEngine);
+    	final String result =
+    	"var NS=\"http://www.w3.org/2000/svg\";\n" 
+                + "var el=document.createElementNS(NS, \""+tag+"\");\n"
+                + "el.id =\"" + newId + "\";\n" 
+                + "var tx = document.createTextNode(\""+ input.replaceAll("\"", "\\\\\"") + "\");"
+                + "el.appendChild(tx);"
+                + "document.getElementById(\"" + this.id + "\").appendChild(el);";
+          ;
+        executeScript(result);
+        return newId;
+    }
+    
 
     public void setFocus() {
         final String result = "document.getElementById(\"" + this.id + "\").focus();";
