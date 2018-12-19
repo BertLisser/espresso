@@ -215,15 +215,15 @@ public class DomUpdate {
         final String result
         ="var inner =document.getElementById(\""+inner+"\");\n"  
         +"var outer =document.getElementById(\""+outer+"\");\n" 
-        +"var lw = parseInt(outer.getAttribute(\"stroke-width\"));\n"
+        +"var lw = parseFloat(outer.getAttribute(\"stroke-width\"));\n"  // Wrong
         +"var ofs = lw;\n"
         +"var siz = 100-2*lw;\n"
         +"outer.lastChild.setAttribute(\"x\", ofs);\n"
         +"outer.lastChild.setAttribute(\"y\", ofs);\n"
         +"outer.lastChild.setAttribute(\"width\", siz);\n"
         +"outer.lastChild.setAttribute(\"height\", siz);\n"
-        +"var hshrink = parseInt(inner.getAttribute(\"width\"))/100;\n"
-        +"var vshrink = parseInt(inner.getAttribute(\"height\"))/100;\n"
+        +"var hshrink = parseFloat(inner.getAttribute(\"width\"))/100;\n"
+        +"var vshrink = parseFloat(inner.getAttribute(\"height\"))/100;\n"
         +"var iw = hshrink*(siz);\n"
         +"var ih = vshrink*(siz);\n"
         +"inner.setAttribute(\"width\", \"\"+iw+\"px\");\n"
