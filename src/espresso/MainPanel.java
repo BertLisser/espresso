@@ -146,7 +146,7 @@ public class MainPanel extends Application {
 								break;
 							}
 							case "adjust": {
-								String id = DomUpdate.adjust(root, input[1], input[2]);
+								String id = DomUpdate.adjust(root, input[1], input[2], input[3]);
 								out.println(id);
 								break;
 							}

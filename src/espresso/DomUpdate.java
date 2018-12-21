@@ -211,11 +211,11 @@ public class DomUpdate {
         return id;
     }
     
-    public static String adjust(DomUpdate we, String outer, String inner) {
+    public static String adjust(DomUpdate we, String outer, String border, String inner) {
         final String result
         ="var inner =document.getElementById(\""+inner+"\");\n"  
         +"var outer =document.getElementById(\""+outer+"\");\n" 
-        +"var lw = parseFloat(outer.getAttribute(\"stroke-width\"));\n"  // Wrong
+        +"var lw = parseFloat(\""+border+"\");\n"  // Wrong OK
         +"var ofs = lw;\n"
         +"var siz = 100-2*lw;\n"
         +"outer.lastChild.setAttribute(\"x\", ofs);\n"
