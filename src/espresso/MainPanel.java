@@ -112,8 +112,8 @@ public class MainPanel extends Application {
 					final DomUpdate root = new DomUpdate("root", webEngine, out);
 					// DomUpdate.Op.valueOf("DIV").build(webEngine, "root");
 					Platform.runLater(() -> {
-						root.addSendMessageHandler(out);
-					});
+						eMsg(root.addSendMessageHandler(out));
+					 });			
 					Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 						public void run() {
 							try {
@@ -130,10 +130,12 @@ public class MainPanel extends Application {
 					BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 					out.println("ready");
 					String inputLine;
-					while ((inputLine = in.readLine()) != null) {
+					// int cnt = 0;
+					while (/*in.ready() && */ (inputLine = in.readLine()) != null) {
+						// eMsg(inputLine+" "+cnt);
 						final String[] input = inputLine.split(";:");
 						// String[] input = {"div", "aap"};
-						eMsg(input[0]);
+						// eMsg(input[0]+" "+cnt);
 						Platform.runLater(() -> {
 							switch (input[0]) {
 							case "root": {
@@ -252,7 +254,7 @@ public class MainPanel extends Application {
 							}
 							case "setInterval": {
 								String r = DomUpdate.setInterval(root, input[1], input[2]);
-								eMsg("setInterval:" + r);
+								eMsg("setInterval:" + input[1]);
 								out.println(r);
 								break;
 							}
@@ -264,20 +266,21 @@ public class MainPanel extends Application {
 							}
 							case "addStylesheet": {
 								String r = DomUpdate.addStylesheet(root, input[1], input[2]);
-								eMsg("addStylesheet:" + r);
+								// eMsg("addStylesheet:" + r);
 								out.println(r);
 								break;
 							}
 							default: {
 								String g = input[0].toUpperCase();
-								eMsg(input[1]);
+								//eMsg(input[1]);
 								String r = DomUpdate.Op.valueOf(g).build(root, input[1]);
-								eMsg("done");
+								// eMsg("done");
 								out.println(r);
 								break;
 							}
 							}
 						});
+					// cnt++;
 					}
 					return 0;
 				} catch (IOException e) {

@@ -124,10 +124,11 @@ public class DomUpdate {
            return webEngine.executeScript(s);
     }
 
-    public void addSendMessageHandler(PrintWriter out) {
+    public String addSendMessageHandler(PrintWriter out) {
         JavaApplication app = new JavaApplication(out);
         JSObject window = (JSObject) executeScript("window");
         window.setMember("app", app);
+        return "addMessageHandler";
     }
 
     public void innerHTML(String input) {
@@ -401,7 +402,7 @@ public class DomUpdate {
     static public String setInterval(DomUpdate we, String id, int interval) {
         final String result = 
           id + " = setInterval(function(){app.sendTick(\""+id+"\");},"+interval+");";
-        we.executeScript(result);
+          we.executeScript(result);
         return id;
     }
     
