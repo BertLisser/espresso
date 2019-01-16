@@ -165,8 +165,9 @@ public class DomUpdate {
     public static String htmlEl(String tag, DomUpdate we, String id) {
         String newId = newId(we.webEngine);
         final String result =
-        "var el=document.createElement(\""+tag+"\");\n" + "el.id =\"" + newId + "\";\n" + 
-        "document.getElementById(\"" + id + "\").appendChild(el);";
+        "var el=document.createElement(\""+tag+"\");\n" + "el.id =\"" + newId + "\";\n" 
+        + "el.addEventListener(\"click\",function(){app.sendClick(\""+newId+"\");});\n" 
+        + "document.getElementById(\"" + id + "\").appendChild(el);";
         we.executeScript(result);
         return newId;
     }
