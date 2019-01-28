@@ -270,6 +270,11 @@ public class MainPanel extends Application {
 								out.println(r);
 								break;
 							}
+							case "addEventListener": {
+							      DomUpdate.addEventListener(root, input[1], input[2]);
+							      out.println("ok");
+							      break;
+							      }
 							default: {
 								String g = input[0].toUpperCase();
 								//eMsg(input[1]);

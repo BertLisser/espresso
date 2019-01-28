@@ -166,7 +166,7 @@ public class DomUpdate {
         String newId = newId(we.webEngine);
         final String result =
         "var el=document.createElement(\""+tag+"\");\n" + "el.id =\"" + newId + "\";\n" 
-        + "el.addEventListener(\"click\",function(){app.sendClick(\""+newId+"\");});\n" 
+        // + "el.addEventListener(\"click\",function(){app.sendClick(\""+newId+"\");});\n" 
         + "document.getElementById(\"" + id + "\").appendChild(el);";
         we.executeScript(result);
         return newId;
@@ -378,7 +378,7 @@ public class DomUpdate {
     static public String input(DomUpdate we, String id) {
         String newId = newId(we.webEngine);
         final String result = "var input=document.createElement(\"input\");\n" + "input.id =\"" + newId + "\";\n"
-            + "input.addEventListener(\"change\",function(){app.sendChange(\""+newId+"\");});\n"
+           // + "input.addEventListener(\"change\",function(){app.sendChange(\""+newId+"\");});\n"
             + "document.getElementById(\"" + id
             + "\").appendChild(input);";
         we.executeScript(result);
@@ -389,11 +389,23 @@ public class DomUpdate {
         String newId = newId(we.webEngine);
         final String result = "var input=document.createElement(\"button\");\n" 
             + "input.id =\"" + newId + "\";\n"
-            + "input.addEventListener(\"click\",function(){app.sendClick(\""+newId+"\");});\n" 
+           // + "input.addEventListener(\"click\",function(){app.sendClick(\""+newId+"\");});\n" 
             + "document.getElementById(\"" + id
             + "\").appendChild(input);";
         we.executeScript(result);
         return newId;
+    }
+    
+    static public String addEventListener(DomUpdate we, String id, String event) {
+    	String result = 
+                "document.getElementById(\"" + id+"\").";
+    	if (event.equals("click"))
+                result+= "addEventListener(\"click\",function(){app.sendClick(\""+id+"\");});";
+    	else 
+        if (event.equals("change"))
+    		result+= "addEventListener(\"change\",function(){app.sendChange(\""+id+"\");});";
+         we.executeScript(result);
+         return id;
     }
     
     static public String setInterval(DomUpdate we, String id, String interval) {
