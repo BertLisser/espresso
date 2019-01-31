@@ -213,11 +213,13 @@ public class DomUpdate {
         return id;
     }
     
-    public static String adjust(DomUpdate we, String outer, String border, String inner) {
+    public static String adjust(DomUpdate we, String outer, String border, String inner, String hshrink, String vshrink) {
         final String result
         ="var inner =document.getElementById(\""+inner+"\");\n"  
         +"var outer =document.getElementById(\""+outer+"\");\n" 
-        +"var lw = parseFloat(\""+border+"\");\n"  // Wrong OK
+        +"var lw = parseFloat(\""+border+"\");\n"
+        +"var hshrink = parseFloat(\""+hshrink+"\");\n"
+        +"var vshrink = parseFloat(\""+vshrink+"\");\n"
         +"var ofs = lw;\n"
         +"var box = outer.viewBox.baseVal;\n"
         +"var maxX = box.width;\n"
@@ -228,8 +230,6 @@ public class DomUpdate {
         +"outer.lastChild.setAttribute(\"y\", ofs);\n"
         +"outer.lastChild.setAttribute(\"width\", sizX);\n"
         +"outer.lastChild.setAttribute(\"height\", sizY);\n"
-        +"var hshrink = parseFloat(inner.getAttribute(\"width\"))/maxX;\n"
-        +"var vshrink = parseFloat(inner.getAttribute(\"height\"))/maxY;\n"
         +"var iw = hshrink*(sizX);\n"
         +"var ih = vshrink*(sizY);\n"
         +"inner.setAttribute(\"width\", \"\"+iw+\"px\");\n"
