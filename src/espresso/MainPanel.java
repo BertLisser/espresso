@@ -157,6 +157,10 @@ public class MainPanel extends Application {
 								out.println("ok");
 								break;
 							}
+							case "pathId": {
+								out.println(root.select(input[1]).pathId(input[2]));
+								break;
+							}
 							case "text": {
 								out.println(root.select(input[1]).text("text", input[2]));
 								break;
@@ -242,7 +246,12 @@ public class MainPanel extends Application {
 							case "wait": {
 								break;
 							}
-
+							case "pop": {
+								eMsg("pop");
+								root.pop();
+								out.println("pop");
+								break;
+							}
 							case "exit": {
 								return;
 							}

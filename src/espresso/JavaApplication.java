@@ -13,10 +13,12 @@
 package espresso;
 
 import java.io.PrintWriter;
+import java.util.LinkedList;
 
 import netscape.javascript.JSObject;
 
     public class JavaApplication {
+    	final private LinkedList<String>  q = new LinkedList<String>();
         final PrintWriter out;
             
             public JavaApplication(PrintWriter out) {
@@ -25,15 +27,18 @@ import netscape.javascript.JSObject;
          
             
             public void sendClick(String id) {
-                out.println(id+":click");
+            	q.add(id+"click");
+                out.println(q.peek());
             }
             
             public void sendTick(String id) {
-                out.println(id+":tick");
+                q.add(id+":tick");
+                out.println(q.peek());
             }
             
             public void sendChange(String id) {
-                out.println(id+":change");
+                q.add(id+":change");
+                out.println(q.peek());
             }
             
             public void sendMessage(JSObject v) {
@@ -50,9 +55,15 @@ import netscape.javascript.JSObject;
                 String s = (String) v.getMember("value");
                 String id = (String) v.getMember("id"); 
                 if (s!=null)
-                    out.println(id+":change:"+s);
+                    q.add(id+":change:"+s);
                 else
-                    out.println(id+":input");  
+                    q.add(id+":input"); 
+                out.println(q.peek());
              }
+            
+            public void pop() {
+            	q.remove();
+            	if (!q.isEmpty()) out.println(q.peek());
+            }
         }
 

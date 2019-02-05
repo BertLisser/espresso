@@ -38,6 +38,8 @@ public class DomUpdate {
         public String eval(DomUpdate we, String id);
     }
     
+    JavaApplication app;
+    
     enum Op {
          H1((we, id)    -> htmlEl("h1",we, id))
          ,H2((we, id)    -> htmlEl("h2",we, id))
@@ -125,10 +127,14 @@ public class DomUpdate {
     }
 
     public String addSendMessageHandler(PrintWriter out) {
-        JavaApplication app = new JavaApplication(out);
+        app = new JavaApplication(out);
         JSObject window = (JSObject) executeScript("window");
         window.setMember("app", app);
         return "addMessageHandler";
+    }
+    
+    public void pop() {
+    	  app.pop();
     }
 
     public void innerHTML(String input) {
@@ -151,8 +157,18 @@ public class DomUpdate {
         return newId;
     }
     
-
-    public void setFocus() {
+    public String pathId(String id) {
+    	final String result =
+    	"var NS=\"http://www.w3.org/2000/svg\";\n" 
+                + "var el=document.createElementNS(NS, \""+"path"+"\");\n"
+                + "el.id =\"" + id + "\";\n" 
+                + "document.getElementById(\"" + this.id + "\").appendChild(el);";
+          ;
+        executeScript(result);
+        return id;
+    }
+    
+   public void setFocus() {
         final String result = "document.getElementById(\"" + this.id + "\").focus();";
         executeScript(result);
     }
