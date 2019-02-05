@@ -27,7 +27,7 @@ import netscape.javascript.JSObject;
          
             
             public void sendClick(String id) {
-            	q.add(id+"click");
+            	q.add(id+":click");
                 out.println(q.peek());
             }
             
