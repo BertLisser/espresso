@@ -413,6 +413,7 @@ public class DomUpdate {
     }
     
     static public String addEventListener(DomUpdate we, String id, String event) {
+    	if (event.equals("tick")) return id;
     	String result = 
                 "document.getElementById(\"" + id+"\").";
     	if (event.equals("click"))

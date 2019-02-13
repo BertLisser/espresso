@@ -246,10 +246,10 @@ public class MainPanel extends Application {
 							case "wait": {
 								break;
 							}
-							case "pop": {
-								eMsg("pop");
-								root.pop();
+							case "pop": {				
 								out.println("pop");
+								eMsg("pop");
+								root.pop();	
 								break;
 							}
 							case "exit": {
