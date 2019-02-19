@@ -223,8 +223,16 @@ public class DomUpdate {
     
     public static String add(DomUpdate we, String id, String appendId) {
         final String result =
-        "var row=document.getElementById(\""+appendId+"\");\n" + 
-        "document.getElementById(\"" + id + "\").appendChild(row);";
+        "var addEl=document.getElementById(\""+appendId+"\");\n" + 
+        "document.getElementById(\"" + id + "\").appendChild(addEl);";
+        we.executeScript(result);
+        return id;
+    }
+    
+    public static String remove(DomUpdate we, String id, String removeId) {
+        final String result =
+        "var removeEl=document.getElementById(\""+removeId+"\");\n" + 
+        "document.getElementById(\"" + id + "\").removeChild(removeEl);";
         we.executeScript(result);
         return id;
     }

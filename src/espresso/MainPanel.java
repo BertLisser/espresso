@@ -147,6 +147,11 @@ public class MainPanel extends Application {
 								out.println(id);
 								break;
 							}
+							case "remove": {
+								String id = DomUpdate.remove(root, input[1], input[2]);
+								out.println(id);
+								break;
+							}
 							case "adjust": {
 								String id = DomUpdate.adjust(root, input[1], input[2], input[3], input[4], input[5]);
 								out.println(id);
