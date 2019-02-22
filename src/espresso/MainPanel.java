@@ -152,6 +152,11 @@ public class MainPanel extends Application {
 								out.println(id);
 								break;
 							}
+							case "replace": {
+								String id = DomUpdate.replace(root, input[1], input[2], input[3]);
+								out.println(id);
+								break;
+							}
 							case "adjust": {
 								String id = DomUpdate.adjust(root, input[1], input[2], input[3], input[4], input[5]);
 								out.println(id);
@@ -286,6 +291,11 @@ public class MainPanel extends Application {
 							}
 							case "addEventListener": {
 							      DomUpdate.addEventListener(root, input[1], input[2]);
+							      out.println("ok");
+							      break;
+							      }
+							case "addScript": {
+							      DomUpdate.addScript(root, input[1], input[2], input[3], input[4]);
 							      out.println("ok");
 							      break;
 							      }

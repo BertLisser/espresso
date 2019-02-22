@@ -237,6 +237,15 @@ public class DomUpdate {
         return id;
     }
     
+    public static String replace(DomUpdate we, String id, String oldId, String newId) {
+        final String result =
+        "var oldEl=document.getElementById(\""+oldId+"\");\n" +
+        "var newEl=document.getElementById(\""+newId+"\");\n" + 
+        "document.getElementById(\"" + id + "\").replaceChild(newEl, oldEl);";
+        we.executeScript(result);
+        return id;
+    }
+    
     public static String adjust(DomUpdate we, String outer, String border, String inner, String hshrink, String vshrink) {
         final String result
         ="var inner =document.getElementById(\""+inner+"\");\n"  
@@ -429,6 +438,17 @@ public class DomUpdate {
     	else 
         if (event.equals("change"))
     		result+= "addEventListener(\"change\",function(){app.sendChange(\""+id+"\");});";
+         we.executeScript(result);
+         return id;
+    }
+    
+    static public String addScript(DomUpdate we, String id, String event, String script, String query) {
+    	if (event.equals("tick")) return id;
+    	String result = 
+                "document.getElementById(\"" + id+"\").";
+    	if (event.equals("click"))
+                result+= "addEventListener(\"click\","
+                		+ "addScript('<script>?<query>')\";});";
          we.executeScript(result);
          return id;
     }

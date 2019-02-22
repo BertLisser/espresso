@@ -139,12 +139,35 @@ function getBoundingClientRect(id){
     return box;
 }
 
+
+
+
+
+function parseQuery () {
+   var scripts = document.getElementsByTagName('script');
+   var myScript = scripts[ scripts.length - 1 ];
+   var query = myScript.src.replace(/^[^\?]+\??/,'');
+   var Params = new Object ();
+   if ( ! query ) return Params; // return empty object
+   var Pairs = query.split(/[;&]/);
+   for ( var i = 0; i < Pairs.length; i++ ) {
+      var KeyVal = Pairs[i].split('=');
+      if ( ! KeyVal || KeyVal.length != 2 ) continue;
+      var key = unescape( KeyVal[0] );
+      var val = unescape( KeyVal[1] );
+      val = val.replace(/\+/g, ' ');
+      Params[key] = val;
+   }
+   return Params;
+}
+
 function addScript(filename)
 {
  var scriptBlock=document.createElement('script')
  scriptBlock.setAttribute("type","text/javascript")
  scriptBlock.setAttribute("src", filename)
  document.getElementsByTagName("head")[0].appendChild(scriptBlock)
+ return parseQuery();
 }
 
 </script>
@@ -202,7 +225,7 @@ function addScript(filename)
 </math>
 </div>
 <div>
-<button onclick="addScript('/private/tmp/script.html')"> Load </button>
+<button onclick="addScript('/private/tmp/script.html?aap=noot')"> Load </button>
 </div>
 <div id="root">
 </div>
