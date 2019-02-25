@@ -294,8 +294,13 @@ public class MainPanel extends Application {
 							      out.println("ok");
 							      break;
 							      }
-							case "addScript": {
+							case "addScriptEvent": {
 							      DomUpdate.addScript(root, input[1], input[2], input[3], input[4]);
+							      out.println("ok");
+							      break;
+							      }
+							case "addScript": {
+							      DomUpdate.addScript(root,  input[2], input[3]);
 							      out.println("ok");
 							      break;
 							      }

@@ -142,13 +142,13 @@ function getBoundingClientRect(id){
 
 
 
+var param = new Object ();
 
-function parseQuery () {
-   var scripts = document.getElementsByTagName('script');
-   var myScript = scripts[ scripts.length - 1 ];
-   var query = myScript.src.replace(/^[^\?]+\??/,'');
-   var Params = new Object ();
-   if ( ! query ) return Params; // return empty object
+function parseQuery (query) {
+   //var scripts = document.getElementsByTagName('script');
+   //var myScript = scripts[ scripts.length - 1 ];
+   // var query = myScript.src.replace(/^[^\?]+\??/,'');
+   if ( ! query ) return;
    var Pairs = query.split(/[;&]/);
    for ( var i = 0; i < Pairs.length; i++ ) {
       var KeyVal = Pairs[i].split('=');
@@ -156,9 +156,8 @@ function parseQuery () {
       var key = unescape( KeyVal[0] );
       var val = unescape( KeyVal[1] );
       val = val.replace(/\+/g, ' ');
-      Params[key] = val;
+      param[key] = val;
    }
-   return Params;
 }
 
 function addScript(filename)
@@ -167,7 +166,7 @@ function addScript(filename)
  scriptBlock.setAttribute("type","text/javascript")
  scriptBlock.setAttribute("src", filename)
  document.getElementsByTagName("head")[0].appendChild(scriptBlock)
- return parseQuery();
+// return parseQuery();
 }
 
 </script>
@@ -225,7 +224,7 @@ function addScript(filename)
 </math>
 </div>
 <div>
-<button onclick="addScript('/private/tmp/script.html?aap=noot')"> Load </button>
+<button onclick="addScript('/private/tmp/script.html')"> Load </button>
 </div>
 <div id="root">
 </div>

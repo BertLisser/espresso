@@ -446,11 +446,18 @@ public class DomUpdate {
     	if (event.equals("tick")) return id;
     	String result = 
                 "document.getElementById(\"" + id+"\").";
-    	if (event.equals("click"))
-                result+= "addEventListener(\"click\","
-                		+ "addScript('<script>?<query>')\";});";
+         result+= "addEventListener(\""+event
+         		+ "\",function(){addScript('"+script+"');});\n";
+    	 result+="parseQuery('"+query+"');\n";
          we.executeScript(result);
          return id;
+    }
+    
+    static public String addScript(DomUpdate we, String script, String query) {
+         String result= "addScript('"+script+"');\n";
+    	 result+="parseQuery('"+query+"');\n";
+         we.executeScript(result);
+         return "ok";
     }
     
     static public String setInterval(DomUpdate we, String id, String interval) {
