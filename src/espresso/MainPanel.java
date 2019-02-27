@@ -295,7 +295,7 @@ public class MainPanel extends Application {
 							      break;
 							      }
 							case "addScriptEvent": {
-							      DomUpdate.addScript(root, input[1], input[2], input[3], input[4]);
+							      DomUpdate.addScriptEvent(root, input[1], input[2], input[3]);
 							      out.println("ok");
 							      break;
 							      }

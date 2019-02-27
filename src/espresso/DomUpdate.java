@@ -442,13 +442,12 @@ public class DomUpdate {
          return id;
     }
     
-    static public String addScript(DomUpdate we, String id, String event, String script, String query) {
+    static public String addScriptEvent(DomUpdate we, String id, String event, String script) {
     	if (event.equals("tick")) return id;
     	String result = 
                 "document.getElementById(\"" + id+"\").";
          result+= "addEventListener(\""+event
-         		+ "\",function(){addScript('"+script+"');});\n";
-    	 result+="parseQuery('"+query+"');\n";
+         		+ "\",function(){"+script+";});\n";
          we.executeScript(result);
          return id;
     }
