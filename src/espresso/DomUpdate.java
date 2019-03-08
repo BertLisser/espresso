@@ -452,8 +452,8 @@ public class DomUpdate {
          return id;
     }
     
-    static public String addScript(DomUpdate we, String script, String query) {
-         String result= "addScript('"+script+"');\n";
+    static public String addScript(DomUpdate we, String script, String query, String where) {
+         String result= "addScript('"+script+"','"+where+"');\n";
     	 result+="parseQuery('"+query+"');\n";
          we.executeScript(result);
          return "ok";
@@ -477,13 +477,14 @@ public class DomUpdate {
     }
     
     static public String addStylesheet(DomUpdate we, String id, String content) {
+    	String newId = newId(we.webEngine);
         final String result = "var sheet = document.createElement(\'style\');\n"
-                               + "sheet.id=\"" + id+"\";\n"
+                               + "sheet.id=\"" + newId+"\";\n"
                                + "sheet.innerHTML=\""+content+"\";\n"
                                + "document.body.appendChild(sheet);"
                             ;
         we.executeScript(result);
-        return id;
+        return newId;
     }
     }
 

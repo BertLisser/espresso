@@ -300,7 +300,7 @@ public class MainPanel extends Application {
 							      break;
 							      }
 							case "addScript": {
-							      DomUpdate.addScript(root,  input[2], input[3]);
+							      DomUpdate.addScript(root,  input[2], input[3], input[4]);
 							      out.println("ok");
 							      break;
 							      }
@@ -322,8 +322,10 @@ public class MainPanel extends Application {
 							+ " or listening for a connection");
 					eMsg(e.getMessage());
 				}
+				
 				return 0;
 			}
+			
 		};
 		// System.err.println("Finished");
 		Thread th = new Thread(task);
@@ -334,6 +336,7 @@ public class MainPanel extends Application {
 		 * ("Hello, JavaFX 11, running on "+version); Scene scene = new Scene (new
 		 * StackPane(l), 300, 200); primaryStage.setScene(scene); primaryStage.show();
 		 */
+		getHostServices().showDocument("file://private/tmp/log.html");
 	}
 
 	public static void main(String[] args) {
